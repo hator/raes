@@ -1,16 +1,26 @@
 #[macro_use]
 extern crate arrayref;
 
-mod aes;
-
+pub mod aes;
+mod constants;
 
 fn main() {
-    // let block = aes::Block::new(&[1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8]);
-    // let key = aes::Key::new(&[1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8]);
-    let block = aes::Block::new(&[1,5,1,5,2,6,2,6,3,7,3,7,4,8,4,8]);
-    let key = aes::Key::new(&[1,5,1,5,2,6,2,6,3,7,3,7,4,8,4,8]);
+    let message_text = "Hello, world! <3";
+    let mut message_array = [0; 16];
+    message_array.copy_from_slice(message_text.as_bytes());
+
+    let key_text = "I like computers";
+    let mut key_array = [0; 16];
+    key_array.copy_from_slice(key_text.as_bytes());
+
+    let block = aes::Block::new(&message_array);
+    let key = aes::Key::new(&key_array);
 
     let encrypted = aes::encrypt(key, block);
+    let decrypted = aes::decrypt(key, encrypted);
 
-    println!("{:?}", encrypted);
+    println!("Message:   {}", message_text);
+    println!("Key:       {}", key_text);
+    println!("Encrypted: {}", String::from_utf8_lossy(&encrypted.as_bytes()[..]));
+    println!("Decrypted: {}", String::from_utf8_lossy(&decrypted.as_bytes()[..]));
 }
