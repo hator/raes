@@ -1,0 +1,7 @@
+[package]
+name = "raes"
+version = "0.1.0"
+authors = ["Jan Michalski <jan.michalski@buzytor.com>"]
+
+[dependencies]
+arrayref = "0.3.3"
